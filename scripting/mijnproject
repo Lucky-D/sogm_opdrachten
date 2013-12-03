@@ -1,0 +1,6 @@
+#! /bin/bash
+
+echo "Dit script heet $0"
+echo "Hallo $1"
+echo "Dit is mijn eerste BASH script"
+
