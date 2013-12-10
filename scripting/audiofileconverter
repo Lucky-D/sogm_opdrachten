@@ -1,0 +1,63 @@
+#! /bin/bash
+
+if [ $# -lt 2 ]
+then
+echo "Je hebt te weinig argumenten opgegeven, gebruik het zo:
+audiofileconverter <wav of aif> <mp3 of flac>"
+exit
+fi
+
+EXTIN=$1
+EXTOUT=$2
+
+if ([ $EXTIN != "wav" ] && [ $EXTIN != "aif" ])
+then
+echo "Je hebt verkeerde argumenten opgegeven, gebruik het zo:
+audiofileconverter <wav of aif> <mp3 of flac>"
+exit
+fi
+
+if ([ $EXTOUT != "mp3" ] && [ $EXTOUT != "flac" ])
+then
+echo "Je hebt verkeerde argumenten opgegeven, gebruik het zo:
+audiofileconverter <wav of aif> <mp3 of flac>"
+exit
+fi
+
+echo
+basename `find ./*.${EXTIN} 2> /dev/null`
+echo
+
+echo "Weet je zeker dat je deze files wilt converteren? (0/1)"
+read ANTWOORD
+if [ $ANTWOORD == 0 ]
+then
+exit
+else
+if [ $ANTWOORD != 1 ]
+then
+echo "Je hebt iets verkeerds ingevoerd, het programma stopt nu ook!"
+exit
+fi
+fi
+
+if [ ! -d ./converted ]
+then
+mkdir ./converted
+fi
+
+FOLDER=./converted
+
+echo
+echo "Started converting..."
+echo
+
+for f in `find ./*.${EXTIN} 2> /dev/null`
+do
+echo "Converting `basename ${f}`..."
+lame -V2 $f $FOLDER/`basename $f .${EXTIN}`.${EXTOUT} 2> /dev/null
+done
+
+echo
+echo "Done converting."
+echo
